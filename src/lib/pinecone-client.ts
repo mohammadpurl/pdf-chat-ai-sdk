@@ -1,23 +1,21 @@
-import { PineconeClient } from "@pinecone-database/pinecone";
+import { Pinecone } from "@pinecone-database/pinecone";
 
 import { env } from "./config";
 import { delay } from "./utils";
 
-let pineconeClientInstance: PineconeClient | null = null;
+let pineconeClientInstance: Pinecone | null = null;
 
 // Create pineconeIndex if it doesn't exist
-async function createIndex(client: PineconeClient, indexName: string) {
+async function createIndex(client: Pinecone, indexName: string) {
   try {
     // const indexExists = await client.describeIndex("yourlawyer");
     // if (indexExists) {
     //   console.log("Pinecone index already exists.");
     // } else {
     await client.createIndex({
-      createRequest: {
-        name: indexName,
-        dimension: 1536,
-        metric: "cosine",
-      },
+      name: indexName,
+      dimension: 1536,
+      spec: { serverless: { cloud: "aws", region: "us-east-1" } },
     });
     console.log(
       `Waiting for ${env.INDEX_INIT_TIMEOUT} seconds for index initialization to complete...`
@@ -34,21 +32,18 @@ async function createIndex(client: PineconeClient, indexName: string) {
 // Initialize index and ready to be accessed.
 async function initPineconeClient() {
   try {
-    const pineconeClient = new PineconeClient();
-    await pineconeClient.init({
-      apiKey: env.PINECONE_API_KEY,
-      environment: env.PINECONE_ENVIRONMENT,
+    const pineconeClient = new Pinecone({
+      apiKey: process.env.PINECONE_API_KEY!,
     });
     const indexName = env.PINECONE_INDEX_NAME;
     console.log(`env.PINECONE_INDEX_NAME is ${env.PINECONE_INDEX_NAME}`);
-    const existingIndexes = await pineconeClient.listIndexes();
+    const indexExists = await pineconeClient.describeIndex("yourlawyer");
 
-    if (!existingIndexes.includes(indexName)) {
-      createIndex(pineconeClient, indexName);
+    if (indexExists) {
+      console.log("Pinecone index already exists.");
     } else {
-      console.log("Your index already exists. nice !!");
+      createIndex(pineconeClient, indexName);
     }
-
     return pineconeClient;
   } catch (error) {
     console.error("error", error);
