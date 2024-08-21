@@ -1,4 +1,5 @@
 import { PineconeClient } from "@pinecone-database/pinecone";
+
 import { env } from "./config";
 import { delay } from "./utils";
 
@@ -7,6 +8,10 @@ let pineconeClientInstance: PineconeClient | null = null;
 // Create pineconeIndex if it doesn't exist
 async function createIndex(client: PineconeClient, indexName: string) {
   try {
+    // const indexExists = await client.describeIndex("yourlawyer");
+    // if (indexExists) {
+    //   console.log("Pinecone index already exists.");
+    // } else {
     await client.createIndex({
       createRequest: {
         name: indexName,
@@ -19,6 +24,7 @@ async function createIndex(client: PineconeClient, indexName: string) {
     );
     await delay(env.INDEX_INIT_TIMEOUT);
     console.log("Index created !!");
+    // }
   } catch (error) {
     console.error("error ", error);
     throw new Error("Index creation failed");
@@ -34,7 +40,7 @@ async function initPineconeClient() {
       environment: env.PINECONE_ENVIRONMENT,
     });
     const indexName = env.PINECONE_INDEX_NAME;
-
+    console.log(`env.PINECONE_INDEX_NAME is ${env.PINECONE_INDEX_NAME}`);
     const existingIndexes = await pineconeClient.listIndexes();
 
     if (!existingIndexes.includes(indexName)) {
