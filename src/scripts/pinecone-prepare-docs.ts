@@ -7,10 +7,11 @@ import { getPineconeClient } from "@/lib/pinecone-client";
 // creation and try again.
 (async () => {
   try {
-    const pineconeClient = await getPineconeClient();
-    console.log("Preparing chunks from PDF file");
     const docs = await getChunkedDocsFromPDF();
     console.log(`Loading ${docs.length} chunks into pinecone...`);
+    const pineconeClient = await getPineconeClient();
+    console.log("Preparing chunks from PDF file");
+
     await embedAndsummarizeStoreDocs(pineconeClient, docs);
     console.log("Data embedded and stored in pine-cone index");
   } catch (error) {

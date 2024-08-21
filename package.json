@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "tsx -r dotenv/config ./src/scripts/pinecone-prepare-docs.ts && next start",
     "lint": "next lint",
     "prepare:data": "tsx -r dotenv/config ./src/scripts/pinecone-prepare-docs.ts"
   },

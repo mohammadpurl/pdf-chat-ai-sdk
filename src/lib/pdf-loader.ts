@@ -13,7 +13,7 @@ export async function getChunkedDocsFromPDF() {
       chunkSize: 1000,
       chunkOverlap: 200,
     });
-
+    console.log(`textSplitter is ${textSplitter}`);
     const chunkedDocs = await textSplitter.splitDocuments(docs);
 
     return chunkedDocs;
