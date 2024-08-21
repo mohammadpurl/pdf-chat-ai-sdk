@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callChain } from "@/lib/langchain";
 import { Message } from "ai";
+import { prepareDocs } from "@/scripts/pinecone-prepare-docs";
 
 const formatMessage = (message: Message) => {
   return `${message.role === "user" ? "Human" : "Assistant"}: ${
@@ -10,6 +11,7 @@ const formatMessage = (message: Message) => {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
+  await prepareDocs();
   const messages: Message[] = body.messages ?? [];
   console.log("Messages ", messages);
   const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
