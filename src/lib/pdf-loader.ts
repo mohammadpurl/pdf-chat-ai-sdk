@@ -5,6 +5,7 @@ import { env } from "./config";
 export async function getChunkedDocsFromPDF() {
   try {
     const loader = new PDFLoader(env.PDF_PATH);
+    console.log(`env.PDF_PATH is ${env.PDF_PATH}`);
     const docs = await loader.load();
 
     // From the docs https://www.pinecone.io/learn/chunking-strategies/

@@ -3,7 +3,7 @@ import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { Pinecone } from "@pinecone-database/pinecone";
 
-export async function embedAndStoreDocs(
+export async function embedAndsummarizeStoreDocs(
   client: Pinecone,
   // @ts-ignore docs type error
   docs: Document<Record<string, any>>[]
