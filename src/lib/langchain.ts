@@ -24,6 +24,7 @@ export async function callChain({ question, chatHistory }: callChainArgs) {
       experimental_streamData: true,
     });
     const data = new experimental_StreamData();
+    console.log(`data is ${data}`);
 
     const chain = ConversationalRetrievalQAChain.fromLLM(
       streamingModel,
@@ -37,6 +38,7 @@ export async function callChain({ question, chatHistory }: callChainArgs) {
         },
       }
     );
+    console.log(`chain is ${chain}`);
 
     // Question using chat-history
     // Reference https://js.langchain.com/docs/modules/chains/popular/chat_vector_db#externally-managed-memory
