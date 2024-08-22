@@ -31,14 +31,16 @@ export async function embedAndsummarizeStoreDocs(
 // Returns vector-store handle to be used a retrievers on langchains
 export async function getVectorStore(client: Pinecone) {
   try {
-    const embeddings = new OpenAIEmbeddings();
+    const embeddings = new OpenAIEmbeddings({
+      openAIApiKey: env.OPENAI_API_KEY,
+    });
     const index = client.Index(env.PINECONE_INDEX_NAME);
 
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex: index,
       textKey: "text",
     });
-
+    console.log(`vectorStore ${vectorStore}`);
     return vectorStore;
   } catch (error) {
     console.log("error ", error);
