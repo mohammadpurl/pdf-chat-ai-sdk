@@ -24,7 +24,7 @@ export async function embedAndsummarizeStoreDocs(
     });
   } catch (error) {
     console.error("error ", error);
-    throw new Error("Failed to load your docs !");
+    throw new Error(`Failed to load your docs ! ${error}`);
   }
 }
 
