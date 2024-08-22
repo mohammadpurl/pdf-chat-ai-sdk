@@ -9,6 +9,7 @@ export async function prepareDocs() {
   try {
     const docs = await getChunkedDocsFromPDF();
     console.log(`Loading ${docs.length} chunks into pinecone...`);
+    console.log(docs);
     const pineconeClient = await getPineconeClient();
     console.log("Preparing chunks from PDF file");
 

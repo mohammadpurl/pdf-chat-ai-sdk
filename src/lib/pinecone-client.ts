@@ -37,7 +37,7 @@ async function initPineconeClient() {
     });
     const indexName = env.PINECONE_INDEX_NAME;
     console.log(`env.PINECONE_INDEX_NAME is ${env.PINECONE_INDEX_NAME}`);
-    const indexExists = await pineconeClient.describeIndex("yourlawyer");
+    const indexExists = await pineconeClient.describeIndex(indexName);
 
     if (indexExists) {
       console.log("Pinecone index already exists.");
